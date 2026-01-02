@@ -1,170 +1,151 @@
 {
   "name": "桃鸢书院",
   "host": "http://www.zzgs.org.cn",
-  "group": "优质书源",
+  "group": "小说",
   "weight": 66,
   "enabled": true,
   "enabledCookies": true,
-  "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15",
-  "contentType": 0,
-  "charset": "utf-8",
-  "resContentType": 2,
   "search": {
     "url": "http://www.zzgs.org.cn/search?searchkey=%@",
-    "method": "GET",
-    "httpRefer": "http://www.zzgs.org.cn",
-    "maxPage": 5,
-    "responseList": "div[@class=result-item]",
-    "responseName": "div[@class=result-item-title].a.text()",
-    "responseAuthor": "div[@class=result-item-title].span.text()",
-    "responseCover": "img.@src",
-    "responseIntro": "div[@class=result-item-desc].text()",
-    "responseSource": {
-      "catalogUrl": "div[@class=result-item-title].a.@href"
+    "parser": {
+      "_list": "div[@class=result-list].div[@class=result-item]",
+      "title": "div[@class=result-item-title].a[0]",
+      "author": ["div[@class=result-item-title].span[0]", "@str:replace(作者：,)"],
+      "cover": "a[@class=result-item-cover].img[0].@src",
+      "intro": "p[@class=result-item-desc][0]",
+      "url": "div[@class=result-item-title].a[0].@href"
+    }
+  },
+  "detail": {
+    "parser": {
+      "title": "h1[0]",
+      "author": "a[href*=author][0]",
+      "cover": "img[0].@src",
+      "intro": "p[0]",
+      "catalog": "a[href*=index][0].@href",
+      "lastChapter": "dd[-1].a[0]"
     }
   },
   "catalog": {
-    "url": "",
-    "method": "GET",
-    "maxPage": 1,
-    "responseList": "dd",
-    "responseName": "a.text()",
-    "responseUrl": "a.@href",
-    "orderBy": 0
+    "parser": {
+      "_list": "dd",
+      "title": "a[0]",
+      "url": "a[0].@href"
+    }
   },
   "chapter": {
-    "url": "",
-    "method": "GET",
-    "responseContent": "div[@id=chaptercontent].html()",
-    "responsePurify": "最新.*?小说：.*|相关推荐：.*|本站.*?转码.*|章节报错.*|返回顶部",
-    "nextPage": "a[contains(text(),'下一页')].@href"
-  },
-  "detail": {
-    "url": "",
-    "method": "GET",
-    "responseName": "h1.text()",
-    "responseAuthor": "a[contains(@href,'author')].text()",
-    "responseCover": "img.@src",
-    "responseIntro": "div[@class=intro].text()",
-    "responseCatalogUrl": "a[contains(@href,'index')].@href",
-    "responseLastChapter": "dd:last-child.a.text()"
+    "parser": {
+      "content": ["div[@id=chaptercontent][0].@html", "@str:regex(最新.*?小说：.*,)", "@str:regex(相关推荐：.*,)", "@str:regex(本站.*?转码.*,)", "@str:regex(章节报错.*,)", "@str:regex(返回顶部,)"],
+      "nextPage": "a[text()=下一页][0].@href"
+    }
   },
   "shupai": [
     {
       "name": "玄幻小说",
-      "url": "http://www.zzgs.org.cn/sort/xuanhuan/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/xuanhuan/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "武侠小说",
-      "url": "http://www.zzgs.org.cn/sort/wuxia/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/wuxia/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "仙侠小说",
-      "url": "http://www.zzgs.org.cn/sort/xianxia/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/xianxia/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "都市小说",
-      "url": "http://www.zzgs.org.cn/sort/dushi/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/dushi/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "历史小说",
-      "url": "http://www.zzgs.org.cn/sort/lishi/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/lishi/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "科幻小说",
-      "url": "http://www.zzgs.org.cn/sort/kehuan/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/kehuan/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "游戏小说",
-      "url": "http://www.zzgs.org.cn/sort/youxi/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/youxi/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "女生小说",
-      "url": "http://www.zzgs.org.cn/sort/nvsheng/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/nvsheng/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     },
     {
       "name": "其它小说",
-      "url": "http://www.zzgs.org.cn/sort/qita/%@calc(pageIndex + 1)",
-      "maxPage": 10,
-      "responseList": "section",
-      "responseName": "a[@title].@title",
-      "responseAuthor": "a[contains(@href,'author')].text()",
-      "responseCover": "img.@src",
-      "responseIntro": "dl.dd:nth-child(2).text()",
-      "responseSource": {
-        "catalogUrl": "a[@title].@href"
+      "url": "http://www.zzgs.org.cn/sort/qita/%@calc(pageIndex+1)",
+      "parser": {
+        "_list": "section",
+        "title": "a[@title][0].@title",
+        "author": "a[href*=author][0]",
+        "cover": "img[0].@src",
+        "intro": "dl.dd[1]",
+        "url": "a[@title][0].@href"
       }
     }
   ]
